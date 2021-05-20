@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Add Customer</title>
+<meta customerName="viewport"
+	content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/}" class="btn btn-primary"><i> Home</i></a> <a
+					th:href="@{/customer/all}" class="btn btn-primary"><i> View
+						Customers </i></a> <a th:href="@{/contract/all}" class="btn btn-primary"><i>
+						View Contracts</i></a> <a th:href="@{/policy/all}" class="btn btn-primary"><i>
+						View Policies</i></a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div>
+			<a th:href="@{/customer/moreInfo}" class="btn btn-primary"><i>
+					More info about this</i></a> <a th:href="@{/customer/add}"
+				class="btn btn-primary"><i class="fas fa-user-plus ml-2">
+					Add Customer</i></a>
+		</div>
+	</div>
+	<div class="container my-5">
+		<h2 class="mb-5">Add Customer</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/customer/create}"
+					th:object="${customer}" method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="customerName" class="col-form-label">Customer
+								Name</label> <input type="text" th:field="*{customerName}"
+								class="form-control" id="customerName"
+								placeholder="Customer Name"> <span
+								th:if="${#fields.hasErrors('customerName')}"
+								th:errors="*{customerName}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="accountNumber" class="col-form-label">Account
+								Number</label> <input type="text" th:field="*{accountNumber}"
+								class="form-control" id="accountNumber"
+								placeholder="Account Number"> <span
+								th:if="${#fields.hasErrors('accountNumber')}"
+								th:errors="*{accountNumber}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="customerCode" class="col-form-label">Customer
+								Code</label> <input type="text" th:field="*{customerCode}"
+								class="form-control" id="customerCode"
+								placeholder="Customer Code"> <span
+								th:if="${#fields.hasErrors('customerCode')}"
+								th:errors="*{customerCode}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="billingContactPhoneNumber" class="col-form-label">Billing
+								Contact PhoneNumber</label> <input type="text"
+								th:field="*{billingContactPhoneNumber}" class="form-control"
+								id="billingContactPhoneNumber"
+								placeholder="Billing Contact PhoneNumber"> <span
+								th:if="${#fields.hasErrors('billingContactPhoneNumber')}"
+								th:errors="*{billingContactPhoneNumber}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="billingContactEmail" class="col-form-label">Billing
+								Contact Email</label> <input type="text"
+								th:field="*{billingContactEmail}" class="form-control"
+								id="billingContactEmail" placeholder="Billing Contact Email">
+							<span th:if="${#fields.hasErrors('billingContactEmail')}"
+								th:errors="*{billingContactEmail}" class="text-danger"></span>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-6 mt-5">
+							<input type="submit" class="btn btn-primary" value="Add Customer">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

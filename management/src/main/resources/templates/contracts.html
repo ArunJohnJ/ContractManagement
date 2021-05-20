@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Contracts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/}" class="btn btn-primary"><i> Home</i></a> <a
+					th:href="@{/customer/all}" class="btn btn-primary"><i> View
+						Customers </i></a> <a th:href="@{/contract/all}" class="btn btn-primary"><i>
+						View Contracts</i></a> <a th:href="@{/policy/all}" class="btn btn-primary"><i>
+						View Policies</i></a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div>
+			<a th:href="@{/contract/moreInfo}" class="btn btn-primary"><i>
+					More info about this</i></a> <a th:href="@{/contract/add}"
+				class="btn btn-primary"><i class="fas fa-user-plus ml-2">
+					Add Contract</i></a>
+		</div>
+	</div>
+	<div th:switch="${allContracts}" class="container my-5">
+		<div class="row">
+			<div class="col-md-6">
+				<h2 th:case="null">No Data yet!</h2>
+				<div class="scrollable" th:case="*">
+					<table class="table table-striped table-responsive-md">
+						<thead>
+							<tr>
+								<th>Contract Number</th>
+								<th>Line Of Business</th>
+								<th>Claim Type</th>
+								<th>Contract Effective Date</th>
+								<th>Contract Expiration Date</th>
+								<th>Mapped to Customer</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="contract : ${allContracts}">
+								<td th:text="${contract.contractNumber}"></td>
+								<td th:text="${contract.lineOfBusiness}"></td>
+								<td th:text="${contract.claimType}"></td>
+								<td th:text="${contract.effectiveDate}"></td>
+								<td th:text="${contract.expirationDate}"></td>
+								<td><a th:text="${contract?.customer?.customerName}"
+									th:href="@{/customer/name/{id}(id=${contract?.customer?.customerName})}"></a></td>
+								<td><a
+									th:href="@{/contract/edit/{id}(id=${contract.contractId})}"
+									class="btn btn-primary"><i class="fas fa-policy-edit ml-2">
+											Edit</i></a></td>
+								<td><a
+									th:href="@{/contract/delete/{id}(id=${contract.contractId})}"
+									class="btn btn-primary"><i class="fas fa-policy-times ml-2">
+											Delete</i></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

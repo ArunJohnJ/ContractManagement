@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -26,11 +26,25 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class ContractServiceImplementationTest {
-	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
+	@Mock
 	ContractRepository contractRepository;
 
 	@InjectMocks
 	ContractServiceImplementation contractService;
+
+	List<Contract> contractList = new ArrayList<>();
+
+	@BeforeEach
+	public void setup() {
+		// Given
+		Contract contract1 = new Contract(1L,
+				new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),
+				LocalDate.parse("2019-01-01"), LocalDate.parse("2019-10-30"), "WC", "WC-9282-198393", "Closed", null);
+		Contract contract2 = new Contract(1L, null, LocalDate.parse("2015-01-01"), LocalDate.parse("2021-10-30"), "GL",
+				"GL-9282-198393", "Open", null);
+		contractList.add(contract1);
+		contractList.add(contract2);
+	}
 
 	@Test
 	public void retrievingWhenContractDoesNotExistShouldThrowException() {
@@ -41,50 +55,84 @@ public class ContractServiceImplementationTest {
 
 	@Test
 	public void getAllContractsTest() {
-		// Given
-		List<Contract> contractList = new ArrayList<>();
-		Contract contract1 = new Contract(1L, new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),LocalDate.parse("2019-01-01"),LocalDate.parse("2019-10-30"),"WC","WC-9282-198393","Closed", null);
-		Contract contract2 = new Contract(1L, null,LocalDate.parse("2015-01-01"),LocalDate.parse("2021-10-30"),"GL","GL-9282-198393","Open", null);
-		contractList.add(contract1);
-		contractList.add(contract2);
-		// when
+		// When
 		when(contractRepository.findAll()).thenReturn(contractList);
-		// then
+		// Then
 		List<Contract> actual = contractService.getAllContracts();
-		System.out.println("contract");
-		System.out.println(actual.toString());
-		assertEquals(2, actual.size());
+		int expectedSize = 2;
+		assertEquals(expectedSize, actual.size());
 		verify(contractRepository, times(1)).findAll();
 
 	}
 
 	@Test
 	public void getContractByIdTest() throws ResourceNotFoundException {
-		Optional<Contract> con = Optional.of(new Contract(1L, new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),LocalDate.parse("2019-01-01"),LocalDate.parse("2019-10-30"),"WC","WC-9282-198393","Closed", null));
-		when(contractRepository.findById(1L))
-				.thenReturn(con);
+		// Given
+		Optional<Contract> con = Optional.of(new Contract(1L,
+				new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),
+				LocalDate.parse("2019-01-01"), LocalDate.parse("2019-10-30"), "WC", "WC-9282-198393", "Closed", null));
+		// When
+		when(contractRepository.findById(1L)).thenReturn(con);
+		// Then
 		Contract contract = contractService.getContract(1L);
 		assertEquals("WC", contract.getLineOfBusiness());
 	}
 
 	@Test
 	public void createContractTest() {
-		Contract contract = new Contract(1L, new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),LocalDate.parse("2019-01-01"),LocalDate.parse("2019-10-30"),"WC","WC-9282-198393","Closed", null);
+		// Given
+		Contract contract = new Contract(1L,
+				new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),
+				LocalDate.parse("2019-01-01"), LocalDate.parse("2019-10-30"), "WC", "WC-9282-198393", "Closed", null);
+		// Then
 		contractService.saveContract(contract);
 		verify(contractRepository, times(1)).save(contract);
 	}
 
 	@Test
 	public void getContractNamesListTest() {
-		contractService.getAllContractNumbers();
-		verify(contractRepository, times(1)).findAll();
-		verify(contractRepository.findAll(), times(1)).stream();
+		// When
+		when(contractRepository.findAll()).thenReturn(contractList);
+		// Then
+		List<String> actual = contractService.getAllContractNumbers();
+		List<String> expected = List.of("WC-9282-198393", "GL-9282-198393");
+		assertEquals(2, actual.size());
+		assertEquals(expected, actual);
 	}
 
 	@Test
 	public void getContractCountTest() {
-		contractService.getContractCount();
-		verify(contractRepository, times(1)).findAll();
-		verify(contractRepository.findAll(), times(1)).stream();
+		// When
+		when(contractRepository.findAll()).thenReturn(contractList);
+		// Then
+		String actualCount = contractService.getContractCount();
+		String expectedCount = "Contracts Count :2";
+		assertEquals(expectedCount, actualCount);
 	}
+
+	@Test
+	public void getExpiredContractsDetailedTest() {
+		// When
+		when(contractRepository.findAll()).thenReturn(contractList);
+		// Then
+		List<Contract> actualExpiredContractsDetailed = contractService.getExpiredContractsDetailed();
+		String actualContractNumber = actualExpiredContractsDetailed.get(0).getContractNumber();
+		List<Contract> expectedExpiredContractsDetailed = List.of(new Contract(1L,
+				new Customer(2L, "1721", "Kesav", "WEL-11", "7162971399", "corp@insurance.com", null),
+				LocalDate.parse("2019-01-01"), LocalDate.parse("2019-10-30"), "WC", "WC-9282-198393", "Closed", null));
+		String exceptedContractNumber = expectedExpiredContractsDetailed.get(0).getContractNumber();
+		assertEquals(exceptedContractNumber, actualContractNumber);
+	}
+
+	@Test
+	public void getExpiredContractsTest() {
+		// When
+		when(contractRepository.findAll()).thenReturn(contractList);
+		// Then
+		List<String> actualExpiredContracts = contractService.getExpiredContracts();
+		List<String> expectedExpiredContracts = List.of("WC-9282-198393");
+		assertEquals(expectedExpiredContracts, actualExpiredContracts);
+
+	}
+
 }

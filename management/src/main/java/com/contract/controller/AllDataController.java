@@ -3,27 +3,32 @@ package com.contract.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import com.contract.domain.AllData;
 import com.contract.service.AllDataService;
 
-@RestController
-@RequestMapping("/allData")
+@Controller
+@RequestMapping
 public class AllDataController {
 
 	@Autowired
 	private AllDataService allDataService;
 
 	@GetMapping("/")
-	public List<AllData> getAllData() {
-		return allDataService.getAllData();
+	public String getAllData(Model model) {
+		List<AllData> allData = allDataService.getAllData();
+		model.addAttribute("allData", allData);
+		return "all-data";
 	}
 
-	@GetMapping("/count")
-	public String getAllCount() {
-		return allDataService.getallCount();
+	@GetMapping("/moreInfo")
+	public String getAllCount(Model model) {
+		List<Long> allCount = allDataService.getallCount();
+		model.addAttribute("allCount", allCount);
+		return "alldata-more-info";
 	}
 }

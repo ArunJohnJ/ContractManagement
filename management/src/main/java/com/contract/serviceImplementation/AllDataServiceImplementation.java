@@ -33,12 +33,10 @@ public class AllDataServiceImplementation implements AllDataService {
 	}
 
 	@Override
-	public String getallCount() {
+	public List<Long> getallCount() {
 		long contractsCount = contractRepository.findAll().stream().map(x -> x.getContractNumber()).distinct().count();
 		long customerCount = customerRepository.findAll().stream().map(x -> x.getCustomerCode()).distinct().count();
 		long policyCount = policyRepository.findAll().stream().map(x -> x.getPolicyNumber()).distinct().count();
-		return "Customer Count :" + customerCount + "\nContracts Count :" + contractsCount + "\nPolicy Count :"
-				+ policyCount;
+		return List.of(contractsCount, customerCount, policyCount);
 	}
-
 }

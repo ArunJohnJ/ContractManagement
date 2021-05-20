@@ -2,7 +2,6 @@ package com.contract.serviceImplementation;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,7 +20,7 @@ public class PolicyServiceImplementation implements PolicyService {
 	private PolicyRepository policyRepository;
 
 	@Override
-	public List<Policy> getAllPolicys() {
+	public List<Policy> getAllPolicies() {
 		return policyRepository.findAll();
 	}
 
@@ -63,9 +62,9 @@ public class PolicyServiceImplementation implements PolicyService {
 	}
 
 	@Override
-	public Map<String, List<Policy>> getExpiredPoliciesDetailed() {
+	public List<Policy> getExpiredPoliciesDetailed() {
 		return policyRepository.findAll().stream().filter(x -> (x.getExpirationDate().compareTo(LocalDate.now())) < 0)
-				.distinct().collect(Collectors.groupingBy(Policy::getPolicyNumber, Collectors.toList()));
+				.distinct().collect(Collectors.toList());
 	}
 
 	@Override
@@ -73,4 +72,12 @@ public class PolicyServiceImplementation implements PolicyService {
 		return policyRepository.findAll().stream().filter(x -> (x.getExpirationDate().compareTo(LocalDate.now())) < 0)
 				.map(Policy::getPolicyNumber).distinct().collect(Collectors.toList());
 	}
+
+	@Override
+	public Policy getPolicyByPolicyNumber(String policyNumber) throws ResourceNotFoundException {
+		Optional<Policy> policy = policyRepository.findByPolicyNumber(policyNumber);
+		return policy.orElseThrow(
+				() -> new ResourceNotFoundException("policy not found for the PolicyNumber-- " + policyNumber));
+	}
+
 }

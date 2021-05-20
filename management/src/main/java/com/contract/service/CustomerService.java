@@ -11,6 +11,8 @@ public interface CustomerService {
 
 	public Customer getCustomer(Long customerId) throws ResourceNotFoundException;
 
+	public Customer getCustomerByName(String customerName) throws ResourceNotFoundException;
+
 	public void saveCustomer(Customer customer);
 
 	public void deleteCustomer(Long customerId) throws ResourceNotFoundException;

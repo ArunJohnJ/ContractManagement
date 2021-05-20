@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<title>Add Policy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+<link rel="stylesheet"
+	href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+	integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="../css/shards.min.css">
+</head>
+<body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/}" class="btn btn-primary"><i> Home</i></a> <a
+					th:href="@{/customer/all}" class="btn btn-primary"><i> View
+						Customers </i></a> <a th:href="@{/contract/all}" class="btn btn-primary"><i>
+						View Contracts</i></a> <a th:href="@{/policy/all}" class="btn btn-primary"><i>
+						View Policies</i></a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div>
+			<a th:href="@{/policy/moreInfo}" class="btn btn-primary"><i>
+					More info about this</i></a> <a th:href="@{/policy/add}"
+				class="btn btn-primary"><i class="fas fa-user-plus ml-2">
+					Add Policy</i></a>
+		</div>
+	</div>
+	<div class="container my-5">
+		<h2 class="mb-5">Add Policy</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<form action="#" th:action="@{/policy/create}" th:object="${policy}"
+					method="post">
+					<div class="row">
+						<div class="form-group col-md-6">
+							<label for="policyNumber" class="col-form-label">Policy
+								Number</label> <input type="text" th:field="*{policyNumber}"
+								class="form-control" id="policyNumber"
+								placeholder="Policy Number"> <span
+								th:if="${#fields.hasErrors('policyNumber')}"
+								th:errors="*{policyNumber}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="policyInsuranceCompany" class="col-form-label">policy
+								Issuing Company</label> <input type="text"
+								th:field="*{policyInsuranceCompany}" class="form-control"
+								id="policyInsuranceCompany"
+								placeholder="Policy Insurance Company"> <span
+								th:if="${#fields.hasErrors('policyInsuranceCompany')}"
+								th:errors="*{policyInsuranceCompany}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="policyLimit" class="col-form-label">Policy
+								Limit</label> <input type="text" th:field="*{policyLimit}"
+								class="form-control" id="policyLimit" placeholder="Policy Limit">
+							<span th:if="${#fields.hasErrors('policyLimit')}"
+								th:errors="*{policyLimit}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="OccurenceLimitType" class="col-form-label">Occurence
+								Limit Type</label> <input type="text" th:field="*{OccurenceLimitType}"
+								class="form-control" id="OccurenceLimitType"
+								placeholder="Occurence Limit Type"> <span
+								th:if="${#fields.hasErrors('OccurenceLimitType')}"
+								th:errors="*{OccurenceLimitType}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="effectiveDate" class="col-form-label">Effective
+								Date</label> <input type="text" th:field="*{effectiveDate}"
+								class="form-control" id="effectiveDate" placeholder="YYYY-MM-DD">
+							<span th:if="${#fields.hasErrors('effectiveDate')}"
+								th:errors="*{effectiveDate}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="expirationDate" class="col-form-label">Expiration
+								Date</label> <input type="text" th:field="*{expirationDate}"
+								class="form-control" id="expirationDate"
+								placeholder="YYYY-MM-DD"> <span
+								th:if="${#fields.hasErrors('expirationDate')}"
+								th:errors="*{expirationDate}" class="text-danger"></span>
+						</div>
+						<div class="form-group col-md-6">
+							<label for="remark" class="col-form-label">Remark</label> <input
+								type="text" th:field="*{remark}" class="form-control"
+								id="remark" placeholder="Remark"> <span
+								th:if="${#fields.hasErrors('remark')}" th:errors="*{remark}"
+								class="text-danger"></span>
+						</div>
+
+						<div class="form-group col-md-6">
+							<label for="contractId" class="col-form-label">Add the
+								policy to the contract </label> <select class="form-control"
+								id="contractId" name="contractId"
+								th:field="*{contract.contractId}">
+								<option th:value=null></option>
+								<option th:each="contract : ${allContracts}"
+									th:value="${contract.contractId}"
+									th:text="${contract.contractNumber}"></option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6 mt-5">
+							<input type="submit" class="btn btn-primary" value="Add Policy">
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

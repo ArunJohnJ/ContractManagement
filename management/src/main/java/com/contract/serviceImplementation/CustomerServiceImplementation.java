@@ -65,4 +65,11 @@ public class CustomerServiceImplementation implements CustomerService {
 		return allCustomers.stream().map(Customer::getCustomerName).distinct().collect(Collectors.toList());
 	}
 
+	@Override
+	public Customer getCustomerByName(String customerName) throws ResourceNotFoundException {
+		Optional<Customer> customer = customerRepository.findByCustomerName(customerName);
+		return customer
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found having name-- " + customerName));
+	}
+
 }

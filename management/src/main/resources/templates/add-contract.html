@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Add Contract</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+        <link rel="stylesheet" href="../css/shards.min.css">
+    </head>
+    <body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<a th:href="@{/}" class="btn btn-primary"><i> Home</i></a> <a
+					th:href="@{/customer/all}" class="btn btn-primary"><i> View
+						Customers </i></a> <a th:href="@{/contract/all}" class="btn btn-primary"><i>
+						View Contracts</i></a> <a th:href="@{/policy/all}" class="btn btn-primary"><i>
+						View Policies</i></a>
+			</div>
+		</div>
+	</div>
+	<div class="container">
+		<div>
+			<a th:href="@{/contract/moreInfo}" class="btn btn-primary"><i>
+					More info about this</i></a> <a th:href="@{/contract/add}"
+				class="btn btn-primary"><i class="fas fa-user-plus ml-2">
+					Add Contract</i></a>
+		</div>
+	</div>
+        <div class="container my-5">
+            <h2 class="mb-5">Add Contract</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <form action="#" th:action="@{/contract/create}" th:object="${contract}" method="post">
+                        <div class="row">
+                            <div class="form-group col-md-6">
+							<label for="contractNumber" class="col-form-label">Contract
+								Number</label> <input type="text" th:field="*{contractNumber}" class="form-control" id="contractNumber" placeholder="Contract Number">
+                                <span th:if="${#fields.hasErrors('contractNumber')}" th:errors="*{contractNumber}" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="Line Of Business" class="col-form-label">lineOfBusiness</label>
+                                <input type="text" th:field="*{lineOfBusiness}" class="form-control" id="lineOfBusiness" placeholder="Line Of Business">
+                                <span th:if="${#fields.hasErrors('lineOfBusiness')}" th:errors="*{lineOfBusiness}" class="text-danger"></span>
+                            </div>
+							<div class="form-group col-md-6">
+                                <label for="claimType" class="col-form-label">Claim Type</label>
+                                <input type="text" th:field="*{claimType}" class="form-control" id="claimType" placeholder="Claim Type">
+                                <span th:if="${#fields.hasErrors('claimType')}" th:errors="*{claimType}" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="effectiveDate" class="col-form-label">Effective Date</label>
+                                <input type="text" th:field="*{effectiveDate}" class="form-control" id="effectiveDate" placeholder="YYYY-MM-DD">
+                                <span th:if="${#fields.hasErrors('effectiveDate')}" th:errors="*{effectiveDate}" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="expirationDate" class="col-form-label">Expiration Date</label>
+                                <input type="text" th:field="*{expirationDate}" class="form-control" id="expirationDate" placeholder="YYYY-MM-DD">
+                                <span th:if="${#fields.hasErrors('expirationDate')}" th:errors="*{expirationDate}" class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-6">
+                            	<label for="customerId" class="col-form-label">Add the contract to the customer </label>
+							    <select class="form-control"  id="customerId" name="customerId"  th:field="*{customer.customerId}">							    
+							    <option th:value="*{customer?.customerId}" th:text="*{customer?.customerName}"></option>
+								<option th:each="customer : ${allCustomers}"					     
+								    th:value="${customer.customerId}" 
+							    th:text="${customer.customerName}"></option>
+							  </select>
+							</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mt-5">
+                                <input type="submit" class="btn btn-primary" value="Add Contract">
+                            </div>
+                        </div>    
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

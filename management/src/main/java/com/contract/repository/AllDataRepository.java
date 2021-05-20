@@ -6,6 +6,5 @@ import org.springframework.stereotype.Repository;
 import com.contract.domain.AllData;
 
 @Repository
-public interface AllDataRepository extends JpaRepository<AllData,Long>{
-
+public interface AllDataRepository extends JpaRepository<AllData, Long> {
 }

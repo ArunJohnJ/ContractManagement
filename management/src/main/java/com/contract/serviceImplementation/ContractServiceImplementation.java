@@ -2,7 +2,6 @@ package com.contract.serviceImplementation;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -63,9 +62,11 @@ public class ContractServiceImplementation implements ContractService {
 	}
 
 	@Override
-	public Map<String, List<Contract>> getExpiredContractsDetailed() {
-		return contractRepository.findAll().stream().filter(x -> (x.getExpirationDate().compareTo(LocalDate.now())) < 0)
-				.distinct().collect(Collectors.groupingBy(Contract::getContractNumber, Collectors.toList()));
+	public List<Contract> getExpiredContractsDetailed() {
+		List<Contract> expiredContracts = contractRepository.findAll().stream()
+				.filter(x -> (x.getExpirationDate().compareTo(LocalDate.now())) < 0).distinct()
+				.collect(Collectors.toList());
+		return expiredContracts;
 	}
 
 	@Override
@@ -74,4 +75,10 @@ public class ContractServiceImplementation implements ContractService {
 				.map(Contract::getContractNumber).distinct().collect(Collectors.toList());
 	}
 
+	@Override
+	public Contract getContractByContractNumber(String contractNumber) throws ResourceNotFoundException {
+		Optional<Contract> contract = contractRepository.findByContractNumber(contractNumber);
+		return contract.orElseThrow(
+				() -> new ResourceNotFoundException("contract not found for the ContractNumber-- " + contractNumber));
+	}
 }

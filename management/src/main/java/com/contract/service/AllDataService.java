@@ -8,6 +8,6 @@ public interface AllDataService {
 
 	public List<AllData> getAllData();
 
-	public String getallCount();
+	public List<Long> getallCount();
 
 }

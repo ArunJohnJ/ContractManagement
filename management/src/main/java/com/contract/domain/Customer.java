@@ -3,7 +3,6 @@ package com.contract.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -25,21 +25,25 @@ public class Customer {
 	private Long customerId;
 
 	@Column(name = "accountNumber")
+	@NotBlank(message = "Account Number is mandatory")
 	private String accountNumber;
 
 	@Column(name = "customerName")
+	@NotBlank(message = "Customer Name is mandatory")
 	private String customerName;
 
 	@Column(name = "customerCode")
+	@NotBlank(message = "Customer Code is mandatory")
 	private String customerCode;
 
 	@Column(name = "billingContactPhoneNumber")
+	@NotBlank(message = "Billing Contact PhoneNumber is mandatory")
 	private String billingContactPhoneNumber;
 
 	@Column(name = "billingContactEmail")
+	@NotBlank(message = "Billing Contact Email is mandatory")
 	private String billingContactEmail;
-
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer") // ,cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	List<Contract> contracts = new ArrayList<>();
 
@@ -121,13 +125,4 @@ public class Customer {
 		this.contracts = contracts;
 	}
 
-//	public void addContract(Contract contract) {
-//		System.out.println("inside add contract");
-//		this.contracts.add(contract);
-//		contract.setCustomer(this);
-//	}
-//	public void removeContract(Contract contract) {
-//		contract.setCustomer(null);
-//		this.contracts.remove(contract);
-//	}
 }

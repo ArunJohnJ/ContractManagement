@@ -1,16 +1,17 @@
 package com.contract.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.contract.domain.Policy;
 import com.contract.exception.ResourceNotFoundException;
 
 public interface PolicyService {
 
-	public List<Policy> getAllPolicys();
+	public List<Policy> getAllPolicies();
 
 	public Policy getPolicy(Long policyId) throws ResourceNotFoundException;
+
+	public Policy getPolicyByPolicyNumber(String policyNumber) throws ResourceNotFoundException;
 
 	public void savePolicy(Policy policy);
 
@@ -21,9 +22,9 @@ public interface PolicyService {
 	public String getPolicyCount();
 
 	public List<String> getAllPolicyNumbers();
-	
-	public Map<String, List<Policy>> getExpiredPoliciesDetailed();
-	
+
+	public List<Policy> getExpiredPoliciesDetailed();
+
 	public List<String> getExpiredPolicies();
 
 }

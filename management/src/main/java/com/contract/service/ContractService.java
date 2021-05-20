@@ -1,7 +1,6 @@
 package com.contract.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.contract.domain.Contract;
 import com.contract.exception.ResourceNotFoundException;
@@ -22,8 +21,10 @@ public interface ContractService {
 
 	public String getContractCount();
 
-	public Map<String, List<Contract>> getExpiredContractsDetailed();
-
 	public List<String> getExpiredContracts();
+
+	public List<Contract> getExpiredContractsDetailed();
+
+	public Contract getContractByContractNumber(String contractNumber) throws ResourceNotFoundException;
 
 }
